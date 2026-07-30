@@ -14,6 +14,7 @@ import {
   AuctionDetailInfoRow,
   AuctionDetailSection,
 } from '@/entities/auction/ui/auction-detail-section.component';
+import type { AuctionsListSearch } from '@/features/auctions-list-filters';
 import type { AuctionShowResponse } from '@/shared/api/contracts/auctions';
 import { dateService } from '@/shared/lib/date';
 import { priceService } from '@/shared/lib/price';
@@ -25,6 +26,8 @@ type AuctionDetailViewProps = {
   auction: AuctionShowResponse;
   betsSlot?: ReactNode;
   betFormSlot?: ReactNode;
+  /** Preserves auctions list filters when navigating back. */
+  listSearch?: AuctionsListSearch;
 };
 
 const boolFlags = (flags: Record<string, boolean | null | undefined>) =>
@@ -32,7 +35,12 @@ const boolFlags = (flags: Record<string, boolean | null | undefined>) =>
     .filter(([, value]) => Boolean(value))
     .map(([key]) => key);
 
-export const AuctionDetailView = ({ auction, betsSlot, betFormSlot }: AuctionDetailViewProps) => {
+export const AuctionDetailView = ({
+  auction,
+  betsSlot,
+  betFormSlot,
+  listSearch = { page: 1 },
+}: AuctionDetailViewProps) => {
   const { main, organizer, contacts, cargo, trading, payment, routes } = auction;
   const status = trading.status ?? 'Unknown';
   const tradingStatus = trading.status_mobile ?? 'Unknown';
@@ -66,7 +74,7 @@ export const AuctionDetailView = ({ auction, betsSlot, betFormSlot }: AuctionDet
     <div className={betFormSlot ? 'space-y-6 pb-28' : 'space-y-6'}>
       <div className="space-y-4">
         <Button asChild variant="ghost" size="sm" className="-ml-2">
-          <Link to={AppLinks.home()} search={{ page: 1 }}>
+          <Link to={AppLinks.home()} search={listSearch}>
             ← К списку аукционов
           </Link>
         </Button>

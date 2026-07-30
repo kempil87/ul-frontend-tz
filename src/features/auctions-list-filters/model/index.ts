@@ -30,4 +30,8 @@ export {
   auctionsListSearchSchema,
   parseAuctionsListSearch,
 } from '@/features/auctions-list-filters/model/auctions-list-search.schema';
+export {
+  getLastAuctionsListSearch,
+  rememberAuctionsListSearch,
+} from '@/features/auctions-list-filters/model/last-auctions-list-search';
 export { toAuctionsListRequest } from '@/features/auctions-list-filters/model/to-auctions-list-request';

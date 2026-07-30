@@ -6,7 +6,7 @@ import { useAuctionDetailQuery } from '@/entities/auction/api/auction-detail.que
 import { canOfferBet } from '@/entities/auction/model/auction.permissions';
 import { AuctionBetsSection } from '@/entities/auction/ui/auction-bets-section.component';
 import { AuctionDetailView } from '@/entities/auction/ui/auction-detail-view.component';
-import { auctionsListSearchDefaults } from '@/features/auctions-list-filters';
+import { getLastAuctionsListSearch } from '@/features/auctions-list-filters';
 import { SetAuctionBetForm } from '@/features/set-auction-bet';
 import { ApiError } from '@/shared/api';
 import { Button } from '@/shared/ui/button';
@@ -19,6 +19,9 @@ export const AuctionDetailPage = () => {
   const { auctionUuid } = auctionDetailRouteApi.useParams();
   const { auction, isPending, isError, error, refetch, isFetching } =
     useAuctionDetailQuery(auctionUuid);
+
+  const listSearch = getLastAuctionsListSearch();
+
   const hideBetsHistory = Boolean(auction?.hide_bets_history || auction?.trading.hide_bets_history);
 
   const betsQuery = useAuctionBetsQuery(auctionUuid, {
@@ -34,6 +37,7 @@ export const AuctionDetailPage = () => {
       <Card className="mx-auto max-w-lg space-y-4" padding="lg">
         <div>
           <p className="text-base font-semibold text-text">Не удалось загрузить аукцион</p>
+
           <p className="mt-1 text-sm text-muted">
             {error instanceof ApiError
               ? error.message
@@ -47,7 +51,7 @@ export const AuctionDetailPage = () => {
           </Button>
 
           <Button asChild variant="ghost">
-            <Link to={AppLinks.home()} search={auctionsListSearchDefaults}>
+            <Link to={AppLinks.home()} search={listSearch}>
               К списку
             </Link>
           </Button>
@@ -61,6 +65,7 @@ export const AuctionDetailPage = () => {
   return (
     <AuctionDetailView
       auction={auction}
+      listSearch={listSearch}
       betsSlot={
         <AuctionBetsSection
           bets={betsQuery.bets}

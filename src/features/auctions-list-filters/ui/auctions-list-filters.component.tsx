@@ -1,12 +1,12 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { getRouteApi } from '@tanstack/react-router';
+import { useEffect, type SubmitEvent } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDebounceCallback } from 'usehooks-ts';
 
-import type { SubmitEvent } from 'react';
-
 import { RoutePaths } from '@/app/links';
 import { useCitiesQuery } from '@/entities/city';
+import { applyFilterToSearch } from '@/features/auctions-list-filters/model/apply-filter-to-search';
 import {
   AUCTION_STATUS_OPTIONS,
   AUCTION_TYPE_OPTIONS,
@@ -21,6 +21,7 @@ import {
   toFiltersFormValues,
   type AuctionsListFiltersFormValues,
 } from '@/features/auctions-list-filters/model/auctions-list-filters-form.schema';
+import type { AuctionsListSearch } from '@/features/auctions-list-filters/model/auctions-list-search.schema';
 import { getActiveFilterChips } from '@/features/auctions-list-filters/model/get-active-filter-chips';
 import { DrawerNames, drawerApi } from '@/shared/model';
 import { Button } from '@/shared/ui/button';
@@ -34,8 +35,8 @@ import {
   TextField,
   TriStateField,
 } from '@/shared/ui/form';
-import type { AuctionsListSearch } from '../model/auctions-list-search.schema';
 import { Icon } from '@/shared/ui/icon';
+import { rememberAuctionsListSearch } from '../model/last-auctions-list-search';
 
 const auctionsListRouteApi = getRouteApi(RoutePaths.home);
 
@@ -59,33 +60,34 @@ export const AuctionsListFilters = () => {
   });
 
   const onFilterChange = (name: string, value: unknown) => {
-    const getParams = (prev: AuctionsListSearch) => {
-      const payload: AuctionsListSearch = { ...prev, page: 1 };
-
-      if (value) {
-        payload[name as keyof AuctionsListSearch] = value as never;
-      } else {
-        delete payload[name as keyof AuctionsListSearch];
-      }
-
-      return payload;
-    };
-
     void navigate({
-      search: getParams,
+      search: (prev) =>
+        applyFilterToSearch({ page: 1, ...prev }, name as keyof AuctionsListSearch, value),
+    });
+  };
+
+  const onRangeChange = (from: number | undefined, to: number | undefined) => {
+    void navigate({
+      search: (prev) => {
+        const withFrom = applyFilterToSearch({ page: 1, ...prev }, 'current_price_from', from);
+        return applyFilterToSearch(withFrom, 'current_price_to', to);
+      },
     });
   };
 
   const onInputChange = useDebounceCallback(onFilterChange, FILTER_DEBOUNCE_MS);
+  const onDebouncedRangeChange = useDebounceCallback(onRangeChange, FILTER_DEBOUNCE_MS);
 
   const resetFilters = () => {
     onInputChange.cancel();
+    onDebouncedRangeChange.cancel();
     form.reset(auctionsListFiltersFormDefaults);
     void navigate({ search: { page: 1 } });
   };
 
   const applySearch = () => {
     onInputChange.flush();
+    onDebouncedRangeChange.flush();
     const cargoNum = form.getValues('cargo_num')?.trim();
     onFilterChange('cargo_num', cargoNum || undefined);
   };
@@ -96,6 +98,10 @@ export const AuctionsListFilters = () => {
     event.preventDefault();
     applySearch();
   };
+
+  useEffect(() => {
+    rememberAuctionsListSearch(search);
+  }, [search]);
 
   return (
     <div className="space-y-3">
@@ -247,7 +253,7 @@ export const AuctionsListFilters = () => {
             min={0}
             max={500_000}
             step={1000}
-            onChange={onFilterChange}
+            onRangeChange={onDebouncedRangeChange}
           />
         </Form>
       </Drawer>

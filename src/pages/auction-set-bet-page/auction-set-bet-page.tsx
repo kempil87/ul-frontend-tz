@@ -8,7 +8,7 @@ import {
   TRADING_STATUS_LABEL,
 } from '@/entities/auction/model/auction.labels';
 import { canOfferBet } from '@/entities/auction/model/auction.permissions';
-import { auctionsListSearchDefaults } from '@/features/auctions-list-filters';
+import { getLastAuctionsListSearch } from '@/features/auctions-list-filters';
 import { SetAuctionBetForm } from '@/features/set-auction-bet';
 import { ApiError } from '@/shared/api';
 import { dateService } from '@/shared/lib/date';
@@ -22,6 +22,7 @@ const auctionBetRouteApi = getRouteApi(RoutePaths.auctionBet);
 
 export const AuctionSetBetPage = () => {
   const { auctionUuid } = auctionBetRouteApi.useParams();
+  const listSearch = getLastAuctionsListSearch();
   const { auction, isPending, isError, error, refetch, isFetching } =
     useAuctionDetailQuery(auctionUuid);
 
@@ -47,7 +48,7 @@ export const AuctionSetBetPage = () => {
           </Button>
 
           <Button asChild variant="ghost">
-            <Link to={AppLinks.home()} search={auctionsListSearchDefaults}>
+            <Link to={AppLinks.home()} search={listSearch}>
               К списку
             </Link>
           </Button>

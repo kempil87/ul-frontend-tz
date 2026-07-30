@@ -1,4 +1,4 @@
-import { useQuery } from '@tanstack/react-query';
+import { keepPreviousData, useQuery } from '@tanstack/react-query';
 
 import { auctionsQueryKeys } from '@/entities/auction/api/auctions.query-keys';
 import { auctionsApi } from '@/shared/api';
@@ -8,6 +8,7 @@ export const useAuctionsListQuery = (params: AuctionListRequest = {}) => {
   const { data, ...query } = useQuery({
     queryKey: auctionsQueryKeys.list(params),
     queryFn: () => auctionsApi.list(params),
+    placeholderData: keepPreviousData,
   });
 
   return {

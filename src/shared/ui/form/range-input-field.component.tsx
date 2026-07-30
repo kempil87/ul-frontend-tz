@@ -16,6 +16,8 @@ type RangeInputFieldProps = {
   max?: number;
   step?: number;
   onChange?: (name: string, value: number | undefined) => void;
+  /** Prefer this for dual-thumb commits so URL updates stay atomic. */
+  onRangeChange?: (from: number | undefined, to: number | undefined) => void;
 };
 
 const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
@@ -30,6 +32,7 @@ export const RangeInputField = ({
   max = 500_000,
   step = 1000,
   onChange,
+  onRangeChange,
 }: RangeInputFieldProps) => {
   const { watch } = useFormContext();
   const fromValue = watch(fromName);
@@ -51,18 +54,32 @@ export const RangeInputField = ({
     setTo(committedTo);
   }
 
+  const commitRange = (nextFrom: number, nextTo: number) => {
+    const normalizedFrom = Math.min(nextFrom, nextTo);
+    const normalizedTo = Math.max(nextFrom, nextTo);
+    setFrom(normalizedFrom);
+    setTo(normalizedTo);
+
+    const fromPayload = normalizedFrom === min ? undefined : normalizedFrom;
+    const toPayload = normalizedTo === max ? undefined : normalizedTo;
+
+    if (onRangeChange) {
+      onRangeChange(fromPayload, toPayload);
+      return;
+    }
+
+    onChange?.(fromName, fromPayload);
+    onChange?.(toName, toPayload);
+  };
+
   const commitFrom = (value: number | undefined) => {
     const next = value == null || Number.isNaN(value) ? min : clamp(value, min, max);
-    const normalized = Math.min(next, to);
-    setFrom(normalized);
-    onChange?.(fromName, normalized === min ? undefined : normalized);
+    commitRange(Math.min(next, to), to);
   };
 
   const commitTo = (value: number | undefined) => {
     const next = value == null || Number.isNaN(value) ? max : clamp(value, min, max);
-    const normalized = Math.max(next, from);
-    setTo(normalized);
-    onChange?.(toName, normalized === max ? undefined : normalized);
+    commitRange(from, Math.max(next, from));
   };
 
   return (
@@ -77,8 +94,9 @@ export const RangeInputField = ({
           onValueChange={([nextFrom, nextTo]) => {
             setFrom(nextFrom);
             setTo(nextTo);
-            onChange?.(fromName, nextFrom === min ? undefined : nextFrom);
-            onChange?.(toName, nextTo === max ? undefined : nextTo);
+          }}
+          onValueCommit={([nextFrom, nextTo]) => {
+            commitRange(nextFrom, nextTo);
           }}
         >
           <Slider.Track className="relative h-1.5 grow rounded-full bg-border">
@@ -108,11 +126,14 @@ export const RangeInputField = ({
               const raw = event.target.value;
               if (raw === '') {
                 setFrom(min);
-                onChange?.(fromName, undefined);
                 return;
               }
 
-              commitFrom(Number(raw));
+              const next = clamp(Number(raw), min, max);
+              setFrom(Math.min(next, to));
+            }}
+            onBlur={() => {
+              commitFrom(from);
             }}
           />
 
@@ -129,11 +150,14 @@ export const RangeInputField = ({
               const raw = event.target.value;
               if (raw === '') {
                 setTo(max);
-                onChange?.(toName, undefined);
                 return;
               }
 
-              commitTo(Number(raw));
+              const next = clamp(Number(raw), min, max);
+              setTo(Math.max(next, from));
+            }}
+            onBlur={() => {
+              commitTo(to);
             }}
           />
         </div>
