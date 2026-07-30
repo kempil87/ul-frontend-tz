@@ -2,7 +2,7 @@ import { AUCTION_STATUS_CODE } from '@/features/auctions-list-filters/model/auct
 import type { AuctionsListSearch } from '@/features/auctions-list-filters/model/auctions-list-search.schema';
 import type { AuctionListRequest } from '@/shared/api/contracts/auctions';
 
-const DEFAULT_PER_PAGE = 20;
+const DEFAULT_PER_PAGE = 5;
 
 const toDayStart = (date: string) => `${date}T00:00:00`;
 const toDayEnd = (date: string) => `${date}T23:59:59`;

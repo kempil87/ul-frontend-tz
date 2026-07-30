@@ -20,7 +20,7 @@ describe('Сборка запроса списка аукционов', () => {
 
     expect(toAuctionsListRequest(search)).toEqual({
       page: 2,
-      per_page: 20,
+      per_page: 5,
       cargo_num: 'CARGO-1001',
       load_city: 'Москва',
       unload_city: 'Казань',

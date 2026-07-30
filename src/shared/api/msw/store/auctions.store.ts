@@ -44,7 +44,7 @@ class AuctionsStore {
 
   list(request: AuctionListRequest = {}): AuctionListResponse {
     const page = Math.max(1, request.page ?? 1);
-    const perPage = Math.min(100, Math.max(1, request.per_page ?? 20));
+    const perPage = Math.min(100, Math.max(1, request.per_page ?? 5));
 
     let items = this.records.map((record) => clone(record.list));
 
