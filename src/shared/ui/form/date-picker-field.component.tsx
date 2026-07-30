@@ -1,11 +1,11 @@
 import * as Popover from '@radix-ui/react-popover';
-import { format, parse } from 'date-fns';
-import { ru } from 'date-fns/locale';
 import { useState } from 'react';
 import { DayPicker } from 'react-day-picker';
+import { ru } from 'react-day-picker/locale';
 import { Controller, useFormContext } from 'react-hook-form';
 
 import { cn } from '@/shared/lib/cn';
+import { dateService, Granularity } from '@/shared/lib/date';
 import { controlVariants, popoverContentVariants } from '@/shared/ui/form/form-control.styles';
 import { FormField } from '@/shared/ui/form/form-field.component';
 
@@ -23,9 +23,13 @@ type DatePickerFieldProps = {
 
 const parseDate = (value: unknown): Date | undefined => {
   if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return undefined;
-  const date = parse(value, 'yyyy-MM-dd', new Date());
-  return Number.isNaN(date.getTime()) ? undefined : date;
+
+  const date = dateService.parse(value);
+  return date.isValid() ? date.toDate() : undefined;
 };
+
+const toDateValue = (date: Date | undefined) =>
+  date ? dateService.format(date, Granularity.DATE_VALUE) : undefined;
 
 export const DatePickerField = ({
   name,
@@ -47,6 +51,14 @@ export const DatePickerField = ({
         render={({ field, fieldState }) => {
           const selected = parseDate(field.value);
 
+          const handleSelect = (date: Date | undefined) => {
+            const currentValue = toDateValue(date);
+
+            field.onChange(currentValue);
+            onChange?.(name, currentValue);
+            setOpen(false);
+          };
+
           return (
             <Popover.Root open={open} onOpenChange={setOpen}>
               <Popover.Trigger asChild>
@@ -60,7 +72,9 @@ export const DatePickerField = ({
                   )}
                 >
                   <span className="truncate">
-                    {selected ? format(selected, 'dd.MM.yyyy') : placeholder}
+                    {selected
+                      ? dateService.format(selected, Granularity.DATE_DISPLAY)
+                      : placeholder}
                   </span>
                   <span className="text-muted">▾</span>
                 </button>
@@ -76,12 +90,7 @@ export const DatePickerField = ({
                     mode="single"
                     locale={ru}
                     selected={selected}
-                    onSelect={(date) => {
-                      const nextValue = date ? format(date, 'yyyy-MM-dd') : undefined;
-                      field.onChange(nextValue);
-                      onChange?.(name, nextValue);
-                      setOpen(false);
-                    }}
+                    onSelect={handleSelect}
                     className="rdp-root text-text"
                   />
 

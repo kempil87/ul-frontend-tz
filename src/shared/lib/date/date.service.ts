@@ -8,6 +8,8 @@ export const Granularity = {
   MONTH: 'MMMM YYYY',
   YEAR: 'YYYY',
   DATE_TIME: 'DD MMM YYYY, HH:mm',
+  DATE_VALUE: 'YYYY-MM-DD',
+  DATE_DISPLAY: 'DD.MM.YYYY',
 };
 
 export const dateService = {

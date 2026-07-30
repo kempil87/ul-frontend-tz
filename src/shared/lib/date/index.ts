@@ -1,1 +1,1 @@
-export { dateService } from '@/shared/lib/date/date.service';
+export { dateService, Granularity } from '@/shared/lib/date/date.service';
