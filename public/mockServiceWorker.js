@@ -42,6 +42,7 @@ addEventListener('message', async function (event) {
       sendToClient(client, {
         type: 'KEEPALIVE_RESPONSE',
       });
+
       break;
     }
 
