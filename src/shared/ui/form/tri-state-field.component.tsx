@@ -52,7 +52,7 @@ export const TriStateField = ({
           const current = options.find((option) => option.value === field.value) ?? options[0];
 
           return (
-            <Popover.Root open={open} onOpenChange={setOpen}>
+            <Popover.Root modal open={open} onOpenChange={setOpen}>
               <Popover.Trigger asChild>
                 <button
                   type="button"

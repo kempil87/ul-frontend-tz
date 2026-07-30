@@ -60,7 +60,7 @@ export const DatePickerField = ({
           };
 
           return (
-            <Popover.Root open={open} onOpenChange={setOpen}>
+            <Popover.Root modal open={open} onOpenChange={setOpen}>
               <Popover.Trigger asChild>
                 <button
                   type="button"

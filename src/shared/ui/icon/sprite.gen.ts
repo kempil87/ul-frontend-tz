@@ -253,18 +253,19 @@ export const sprites = defineSpriteMap([
     defineSpriteAsset(
       [
         defineSpriteSymbol(['auctions'], [24]),
+        defineSpriteSymbol(['check'], [16]),
         defineSpriteSymbol(['close'], [24]),
         defineSpriteSymbol(['magnifier'], [16]),
         defineSpriteSymbol(['menu'], [24]),
         defineSpriteSymbol(['sliders'], [16]),
       ],
-      defineExternalAssetMeta('common.d6b242b9.svg'),
+      defineExternalAssetMeta('common.aaf863f6.svg'),
     ),
   ]),
 ]);
 
 export type SpritesMeta = {
-  common: 'auctions' | 'close' | 'magnifier' | 'menu' | 'sliders';
+  common: 'auctions' | 'check' | 'close' | 'magnifier' | 'menu' | 'sliders';
 };
 
 //#endregion

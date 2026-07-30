@@ -6,6 +6,7 @@ import { Controller, useFormContext } from 'react-hook-form';
 import { cn } from '@/shared/lib/cn';
 import { controlVariants, popoverContentVariants } from '@/shared/ui/form/form-control.styles';
 import { FormField } from '@/shared/ui/form/form-field.component';
+import { Icon } from '../icon/icon.component';
 
 export type ComboboxOption = {
   value: string;
@@ -92,6 +93,7 @@ export const ComboboxField = ({
 
           return (
             <Popover.Root
+              modal
               open={open}
               onOpenChange={(next) => {
                 setOpen(next);
@@ -158,7 +160,7 @@ export const ComboboxField = ({
                                 tabIndex={-1}
                               >
                                 <Checkbox.Indicator className="text-[10px] text-accent">
-                                  ✓
+                                  <Icon name="common:check" className="size-4" />
                                 </Checkbox.Indicator>
                               </Checkbox.Root>
                             )}
