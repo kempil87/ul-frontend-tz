@@ -8,10 +8,19 @@ import unusedImports from 'eslint-plugin-unused-imports';
 import eslintConfigPrettier from 'eslint-config-prettier';
 
 export default tseslint.config(
-  { ignores: ['dist', 'node_modules'] },
+  { ignores: ['dist', 'node_modules', 'public/mockServiceWorker.js'] },
 
   js.configs.recommended,
   ...tseslint.configs.recommended,
+
+  {
+    files: ['scripts/**/*.{js,mjs,cjs}'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: globals.node,
+    },
+  },
 
   {
     files: ['**/*.{ts,tsx}'],
