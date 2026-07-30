@@ -38,7 +38,7 @@ export const Header = () => {
           className="flex shrink-0 items-center gap-2"
         >
           <img
-            src="/images/logo/logo-black.png"
+            src={`${import.meta.env.BASE_URL}images/logo/logo-black.png`}
             alt="Умная логистика"
             className="max-h-12 invert"
           />

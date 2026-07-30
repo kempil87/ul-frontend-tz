@@ -51,7 +51,11 @@ export const Sidebar = () => {
         )}
       >
         <div className="flex items-center border-b border-border px-4 py-5">
-          <img src="/images/logo/logo-black.png" alt="Умная логистика" className="max-h-10" />
+          <img
+            src={`${import.meta.env.BASE_URL}images/logo/logo-black.png`}
+            alt="Умная логистика"
+            className="max-h-10"
+          />
         </div>
 
         <nav className="flex-1 overflow-y-auto px-3 py-4" aria-label="Мобильная навигация">
