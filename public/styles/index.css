@@ -1,0 +1,82 @@
+@import 'tailwindcss';
+@import './lib/fonts.css';
+
+@theme {
+  --color-app: #ffffff;
+  --color-header: #000000;
+  --color-sidebar: #ffffff;
+  --color-raised: #ffffff;
+  --color-raised-hover: #f8f8f8;
+  --color-border: #dce3eb;
+  --color-text: #222222;
+  --color-muted: #757575;
+  --color-accent: #167ff9;
+  --color-accent-hover: #0f6de0;
+  --color-link: #167ff9;
+  --color-nav-active: #efefef;
+  --color-chip: #f1f4f9;
+  --color-chip-active: #222222;
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+}
+
+:root {
+  color-scheme: light;
+  --icon-secondary-color: currentColor;
+}
+
+html {
+  font-family: 'Onest', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--color-text);
+  background-color: var(--color-app);
+  height: 100%;
+}
+
+body,
+#root {
+  height: 100%;
+  background-color: var(--color-app);
+  color: var(--color-text);
+}
+
+.rdp-root {
+  --rdp-accent-color: var(--color-accent);
+  --rdp-accent-background-color: var(--color-nav-active);
+  --rdp-today-color: var(--color-accent);
+  --rdp-day-height: 2rem;
+  --rdp-day-width: 2rem;
+  color: var(--color-text);
+}
+
+.icon,
+.icon-x,
+.icon-y {
+  display: inline-block;
+  box-sizing: content-box;
+  fill: currentColor;
+  color: inherit;
+  vertical-align: -0.125em;
+  user-select: none;
+}
+
+.icon,
+.icon-x {
+  width: 1em;
+}
+
+.icon,
+.icon-y {
+  height: 1em;
+}
+
+input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
