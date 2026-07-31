@@ -18,6 +18,51 @@
   --color-chip-active: #222222;
   --color-success: #16a34a;
   --color-danger: #dc2626;
+
+  --animate-drawer-overlay-in: drawer-overlay-in 200ms ease-out;
+  --animate-drawer-overlay-out: drawer-overlay-out 150ms ease-in;
+  --animate-drawer-in: drawer-in 220ms ease-out;
+  --animate-drawer-out: drawer-out 180ms ease-in;
+}
+
+@keyframes drawer-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes drawer-overlay-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes drawer-in {
+  from {
+    opacity: 0;
+    transform: translateX(1.25rem);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes drawer-out {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(1.25rem);
+  }
 }
 
 :root {

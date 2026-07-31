@@ -20,11 +20,12 @@ export const Drawer = ({ name, title, children, footer, className }: DrawerProps
   return (
     <Dialog.Root open={open} onOpenChange={(isVisible) => drawerApi.setOpen(name, isVisible)}>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-40 bg-black/50" />
+        <Dialog.Overlay className="fixed inset-0 z-40 bg-black/50 data-[state=open]:animate-drawer-overlay-in data-[state=closed]:animate-drawer-overlay-out" />
 
         <Dialog.Content
           className={cn(
-            'fixed inset-4 z-50 flex flex-col rounded-3xl bg-raised shadow-xl outline-none md:max-w-md md:left-auto md:w-full',
+            'fixed inset-4 z-50 flex flex-col rounded-3xl bg-raised shadow-xl outline-none md:left-auto md:w-full md:max-w-md',
+            'data-[state=open]:animate-drawer-in data-[state=closed]:animate-drawer-out',
             className,
           )}
         >
