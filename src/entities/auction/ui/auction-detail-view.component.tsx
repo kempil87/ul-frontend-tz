@@ -21,6 +21,8 @@ import { priceService } from '@/shared/lib/price';
 import { Button } from '@/shared/ui/button';
 import { Card } from '@/shared/ui/card';
 import { Chip } from '@/shared/ui/chip';
+import { useMobile } from '@/shared/model';
+import { cn } from '@/shared/lib/cn';
 
 type AuctionDetailViewProps = {
   auction: AuctionShowResponse;
@@ -41,6 +43,7 @@ export const AuctionDetailView = ({
   betFormSlot,
   listSearch = { page: 1 },
 }: AuctionDetailViewProps) => {
+  const isMobile = useMobile();
   const { main, organizer, contacts, cargo, trading, payment, routes } = auction;
   const status = trading.status ?? 'Unknown';
   const tradingStatus = trading.status_mobile ?? 'Unknown';
@@ -71,7 +74,11 @@ export const AuctionDetailView = ({
   ].filter(Boolean) as string[];
 
   return (
-    <div className={betFormSlot ? 'space-y-6 pb-28' : 'space-y-6'}>
+    <div
+      className={cn('space-y-6', {
+        'pb-28': betFormSlot && !isMobile,
+      })}
+    >
       <div className="space-y-4">
         <Button asChild variant="ghost" size="sm" className="-ml-2">
           <Link to={AppLinks.home()} search={listSearch}>
@@ -306,7 +313,7 @@ export const AuctionDetailView = ({
       </div>
 
       {betFormSlot && (
-        <div className="fixed inset-x-0 bottom-0 z-20 border-t-2 border-border bg-raised/95 px-4 py-3 backdrop-blur md:px-6">
+        <div className="fixed inset-x-0 bottom-0 z-20 bg-raised/95 py-3 px-4.5 backdrop-blur ring-1 ring-border max-md:rounded-t-3xl max-md:-mx-4 max-md:-mb-4.5 max-md:sticky">
           <div className="mx-auto max-w-6xl">{betFormSlot}</div>
         </div>
       )}

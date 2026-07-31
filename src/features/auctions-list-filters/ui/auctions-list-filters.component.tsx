@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { getRouteApi } from '@tanstack/react-router';
 import { useEffect, type SubmitEvent } from 'react';
 import { useForm } from 'react-hook-form';
-import { useDebounceCallback } from 'usehooks-ts';
+import { useDebounceCallback, useMediaQuery } from 'usehooks-ts';
 
 import { RoutePaths } from '@/app/links';
 import { useCitiesQuery } from '@/entities/city';
@@ -23,7 +23,7 @@ import {
 } from '@/features/auctions-list-filters/model/auctions-list-filters-form.schema';
 import type { AuctionsListSearch } from '@/features/auctions-list-filters/model/auctions-list-search.schema';
 import { getActiveFilterChips } from '@/features/auctions-list-filters/model/get-active-filter-chips';
-import { DrawerNames, drawerApi } from '@/shared/model';
+import { DrawerNames, drawerApi } from '@/shared/model/drawer';
 import { Button } from '@/shared/ui/button';
 import { Chip } from '@/shared/ui/chip';
 import { Drawer } from '@/shared/ui/drawer';
@@ -44,6 +44,8 @@ export const AuctionsListFilters = () => {
   const search = auctionsListRouteApi.useSearch();
   const navigate = auctionsListRouteApi.useNavigate();
   const { cities } = useCitiesQuery();
+
+  const isMobile = useMediaQuery('(max-width: 768px)');
 
   const formValues = toFiltersFormValues(search);
   const activeCount = countActiveFilters(formValues);
@@ -106,7 +108,7 @@ export const AuctionsListFilters = () => {
   return (
     <div className="space-y-3">
       <Form onSubmit={handleSubmit} form={form}>
-        <div className="flex items-center gap-2">
+        <div className="flex gap-2 items-center">
           <TextField
             startContent={<Icon name="common:magnifier" className="size-5.5" />}
             className="w-full [&_#wrapper]:h-12"
@@ -122,7 +124,7 @@ export const AuctionsListFilters = () => {
               onClick={() => drawerApi.open(DrawerNames.auctionsFilters)}
             >
               <Icon name="common:sliders" className="size-4" />
-              Фильтры
+              {!isMobile && 'Фильтры'}
               {drawerFilterCount > 0 && (
                 <span className="rounded-md bg-accent px-1.5 py-1.5 text-xs text-white min-w-6">
                   {drawerFilterCount}
@@ -130,7 +132,7 @@ export const AuctionsListFilters = () => {
               )}
             </Button>
 
-            <Button type="button" variant="primary" onClick={applySearch}>
+            <Button className="max-md:hidden" type="button" variant="primary" onClick={applySearch}>
               Найти
             </Button>
           </div>

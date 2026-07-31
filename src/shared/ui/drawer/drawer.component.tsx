@@ -2,7 +2,7 @@ import * as Dialog from '@radix-ui/react-dialog';
 import type { ReactNode } from 'react';
 
 import { cn } from '@/shared/lib/cn';
-import { drawerApi, useDrawersStore } from '@/shared/model/drawers.store';
+import { drawerApi, useDrawersStore } from '@/shared/model/drawer/drawers.store';
 import { Button } from '@/shared/ui/button';
 import { Icon } from '@/shared/ui/icon';
 
@@ -24,7 +24,7 @@ export const Drawer = ({ name, title, children, footer, className }: DrawerProps
 
         <Dialog.Content
           className={cn(
-            'fixed inset-y-4 right-4 z-50 flex w-full max-w-md flex-col rounded-2xl bg-raised shadow-xl outline-none',
+            'fixed inset-y-4 right-4 left-4 z-50 flex md:w-full flex-col rounded-2xl bg-raised shadow-xl outline-none md:max-w-md md:right-auto',
             className,
           )}
         >

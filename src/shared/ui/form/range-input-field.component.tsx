@@ -16,7 +16,6 @@ type RangeInputFieldProps = {
   max?: number;
   step?: number;
   onChange?: (name: string, value: number | undefined) => void;
-  /** Prefer this for dual-thumb commits so URL updates stay atomic. */
   onRangeChange?: (from: number | undefined, to: number | undefined) => void;
 };
 
