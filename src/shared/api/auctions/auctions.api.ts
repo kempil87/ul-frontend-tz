@@ -9,8 +9,10 @@ import type {
 import { apiClient } from '@/shared/api/http/api-client';
 
 export const auctionsApi = {
-  list: async (body: AuctionListRequest = {}) => {
-    const { data } = await apiClient.post<AuctionListResponse>('/auctions/list', body);
+  list: async (body: AuctionListRequest = {}, options?: { signal?: AbortSignal }) => {
+    const { data } = await apiClient.post<AuctionListResponse>('/auctions/list', body, {
+      signal: options?.signal,
+    });
     return data;
   },
 

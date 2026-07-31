@@ -9,6 +9,8 @@ const withLatency = async <T>(data: T, ms = 300): Promise<T> => {
 };
 
 export const auctionsHandlers = [
+  /** Почему POST method я так и не понял,
+   * правильнее было бы использовать для таких запросов кешируемый GET с query парамтерами **/
   http.post('/auctions/list', async ({ request }) => {
     const body = (await request.json().catch(() => ({}))) as AuctionListRequest;
     return HttpResponse.json(await withLatency(auctionsStore.list(body)));

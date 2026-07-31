@@ -7,7 +7,7 @@ import type { AuctionListRequest } from '@/shared/api/contracts/auctions';
 export const useAuctionsListQuery = (params: AuctionListRequest = {}) => {
   const { data, ...query } = useQuery({
     queryKey: auctionsQueryKeys.list(params),
-    queryFn: () => auctionsApi.list(params),
+    queryFn: ({ signal }) => auctionsApi.list(params, { signal }),
     placeholderData: keepPreviousData,
   });
 

@@ -41,8 +41,6 @@ yarn test
 ## Ограничения
 
 - **Шаг ставки на карточке списка** не показывается: в list DTO (`AuctionListItemTradingPrice`) нет поля `step` — оно есть только в detail. Цена за км берётся из `main.price_per_km`.
-- Auth отсутствует: MSW работает без Bearer-токена.
-- Seed/MSW — учебный in-memory store, не полный продакшен-бэкенд.
 
 ## AI
 
