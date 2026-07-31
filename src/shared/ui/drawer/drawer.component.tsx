@@ -24,7 +24,7 @@ export const Drawer = ({ name, title, children, footer, className }: DrawerProps
 
         <Dialog.Content
           className={cn(
-            'fixed inset-y-4 right-4 left-4 z-50 flex md:w-full flex-col rounded-2xl bg-raised shadow-xl outline-none md:max-w-md md:right-auto',
+            'fixed inset-4 z-50 flex flex-col rounded-3xl bg-raised shadow-xl outline-none md:max-w-md md:left-auto md:w-full',
             className,
           )}
         >
